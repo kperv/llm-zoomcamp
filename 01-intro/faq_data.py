@@ -39,7 +39,7 @@ def index_documents(documents: list) -> Elasticsearch:
     # first time uncomment
     # es_client.indices.create(index=INDEX_NAME, body=index_settings)
     for document in tqdm(documents):
-        es_client.index(index=index_name, document=document)
+        es_client.index(index=INDEX_NAME, document=document)
     return es_client
 
 def search(es_client: Elasticsearch, query: str) -> list[dict]:
@@ -63,13 +63,9 @@ def search(es_client: Elasticsearch, query: str) -> list[dict]:
         }
     }
     response = es_client.search(index=INDEX_NAME, body=search_query)
-    responses = response['hits']['hits']
-    best_match = responses[0]
-    print(best_match._score)
-    return responses
+    return response
 
 def main():
-    print('Active')
     documents = get_documents()
     es_client = index_documents(documents)
     query = "How do I execute a command in a running docker container?"
